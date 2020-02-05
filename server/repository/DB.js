@@ -16,8 +16,17 @@ async function executeFindOne(collection, query){
     const result = await dbb.collection(collection).findOne(query)
     return result;
 }
-
+ function insertOne(collection,body){
+    return new Promise((resolve, reject) => {
+        resolve(dbb.collection(collection).insertOne((body))), (err) => {
+            if (err) {
+                reject(err);
+            }
+        }
+    });
+}
 
 module.exports = {
+    insertOne:insertOne,
     executeFindOne: executeFindOne
 }

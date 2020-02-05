@@ -24,31 +24,24 @@ function init(router){
             res.status(500).end();
         }
     });
-   
+
+    router.post('/auth/register',celebrate(schema.registerSchema),async(req,res)=>{
+        const insert=await authService.registerUser(req.body);
+        if(insert){
+        res.status(200).end();
+        }
+        else{
+            res.status(404).end();
+        }
+        
+    })
 }
 
-function insert(router){
-    router.post('/auth/register',celebrate(schema.registerSchema),(req,res)=>{
-        return new Promise((resolve, reject) => {
-            dbb.collection('User').insertOne(({
-                name: req.body.name,
-                surname: req.body.surname,
-                age: req.body.age,
-                email: req.body.email,
-                phone: req.body.telephoneNumber,
-                password: hash
-            })),(err)=>{
-            if(err){
-               reject(res.status(404).end()); 
-            }
-            else{
-                res.status(200).end();
-            }
-        }
-    })
-    })
-}
+
+    
+    
+    
+
 module.exports = {
-    insert:insert,
     init: init
 };

@@ -1,0 +1,125 @@
+<div class="navbar">
+    <a class="link btn" routerLink="/home">HOME</a>
+    <a class="link btn" routerLink="/profile">PROFILE</a>
+</div>
+<div>
+    <p style="margin-top: 2.5%; margin-left: 0.5%"> There are {{matchesNumber}} matches avaible now!</p>
+</div>
+
+<form [formGroup]="match" (ngSubmit) = "onSubmit()" class="matches">
+    <div class="login-wrap">
+        <div class="login-html">
+            <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Create one match</label>
+            <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">See all matches</label>
+            <div class="login-form">
+                <div class="sign-in-htm">
+                    <div class="group">
+                        <label for="user" class="label">Team players</label>
+                        <div style="display: inline-block;">
+                            <p style="color: whitesmoke; font-size: 13px;"><input formControlName="teamPlayers" value="5 vs 5" name="teamPlayers" id="user" type="radio">5 vs 5 <br></p>
+                            <p style="color: whitesmoke; font-size: 13px;"><input formControlName="teamPlayers" value="8 vs 8" name="teamPlayers" id="user" type="radio">8 vs 8 <br></p>
+                        
+                        <span class="errMess" *ngIf="!match.controls['teamPlayers'].valid && match.controls['teamPlayers'].touched">
+                            <span class="errMess" *ngIf="match.controls['teamPlayers'].errors.required && match.controls['teamPlayers'].touched">ERROR: Number of the player for team is required</span>
+                            <span class="errMess" *ngIf="match.controls['teamPlayers'].errors.numPlayersValidator && match.controls['teamPlayers'].touched">ERROR: Number of the player for team should be greaatest then zero</span>
+                        </span>
+                    </div>
+                    </div>
+                    
+                    <div class="group">
+                        <label for="user" class="label" >How many players are you looking for ?</label>
+                        <select formControlName="numPlayers" class="select-players">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                        </select>
+                        <span class="errMess" *ngIf="!match.controls['numPlayers'].valid && match.controls['numPlayers'].touched">
+                            <span class="errMess" *ngIf="match.controls['numPlayers'].errors.required && match.controls['numPlayers'].touched">ERROR: Number of players is required</span>
+                            <span class="errMess" *ngIf="match.controls['numPlayers'].errors.minlength && match.controls['numPlayers'].touched">ERROR: Number of players should be min {{user.controls['numPlayers'].errors.minlength.requiredLength}} number <br></span>
+                    </span>
+                    </div>
+                    <div class="group">
+                        <label for="user" class="label" >Date and Hour</label>
+                        <input class="dh" formControlName="date" type="date">
+                        <input class="dh" formControlName="hour" type="time" id="appt" min="09:00" max="23:00" required>
+                        <button class="miniButton">Select</button>
+                        <span class="errMess" *ngIf="!match.controls['date'].valid && match.controls['date'].touched">
+                            <span class="errMess" *ngIf="match.controls['date'].errors.required && match.controls['date'].touched">ERROR: date is required <br></span>
+                            <span class="errMess" *ngIf="match.controls['date'].errors.dateValidator && match.controls['date'].touched">ERROR: date is not valid <br></span>
+                    </span>
+                    </div>
+                    <div class="group">
+                        <label for="user" class="label" >Pitch</label>
+                        <input formControlName="pitch" id="user" type="text" class="input">
+                        <span class="errMess" *ngIf="!match.controls['pitch'].valid && match.controls['pitch'].touched">
+                            <span class="errMess" *ngIf="match.controls['pitch'].errors.required && match.controls['pitch'].touched">ERROR: pitch is required <br></span>
+                            <span class="errMess" *ngIf="match.controls['pitch'].errors.pattern && match.controls['pitch'].touched">ERROR: pitch not valid</span>
+                    </span>
+                    </div>
+                    <div class="group">
+                        <label for="user" class="label" >Price for one player (€)</label>
+                        <input formControlName = "price" id="user" type="text" class="input">
+                        <span class="errMess" *ngIf="!match.controls['price'].valid && match.controls['price'].touched">
+                            <span class="errMess" *ngIf="match.controls['price'].errors.required && match.controls['price'].touched">ERROR: Price of the pitch is required <br></span>
+                            <span class="errMess" *ngIf="match.controls['price'].errors.pattern && match.controls['price'].touched">ERROR: Price should be composed by numbers<br></span>
+                    </span>
+                    </div>
+                    <br>
+                    <div class="group">
+                        <button type="submit" class="button" [disabled]=!(match.valid) (click)="addMatch()" routerLink="/" >Add your match !</button>
+                    </div>
+                    <div>
+                        <p *ngIf="!match.valid" style="color: whitesmoke; font-size: 12px; margin-left: 42%; margin-right: 42%;">Fill data in the fields</p>
+                    </div>
+                    <div class="hr"></div>
+                </div>
+
+                <div class="sign-up-htm">
+                    <div style="color: whitesmoke;">
+                        <p> Last 3 matches avaible :</p>
+                        <br>
+                        <p *ngIf="!matchesNumber">No match avaible now!</p>
+                    </div>
+                    <div *ngIf="matchesNumber" class="container" style="border: none; border-radius: 15%; background-color: whitesmoke;">
+                        <div class="row" style="margin: 0.5em;">
+                            
+                            <div class="col-md-2"><p class="errMess">Match</p>
+                                <div *ngFor="let match of matches, let i = index">{{ match.teamPlayers }}</div><br>
+                            </div >
+                            <div class="col-md-3"><p class="errMess">Avaible positions</p>
+                                <div *ngFor="let match of matches, let i = index">{{ match.numPlayers }}</div><br>
+                            </div>
+                            <div class="col-md-3"><p class="errMess">Date & Hour</p>
+                                <div *ngFor="let match of matches, let i = index">{{ match.date }} {{ match.hour }}</div><br>
+                            </div >
+                            <div class="col-md-2"><p class="errMess">Pitch</p>
+                                <div *ngFor="let match of matches, let i = index">{{ match.pitch }}</div><br>
+                            </div>
+                            <div class="col-md-2"><p class="errMess">Price</p>
+                                <div *ngFor="let match of matches, let i = index">{{ match.price | currency: 'EUR' }}</div><br>
+                            </div>
+                    </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    
+    
+</form>
+
+
